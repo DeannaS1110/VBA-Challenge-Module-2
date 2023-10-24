@@ -1,0 +1,43 @@
+Import openpyxl
+
+'Load workbook and select sheet
+wb = openpyxl.load_workbook('Alphabetical Testing.xlsx')
+ws = wb{'Sheet1']
+
+'Find last row and column of data
+last_row = ws.max_row
+last_col = ws.max_column
+
+'Find the column indices for the relevant data
+ticker_col = 1
+date_col = 2
+open_col = 3
+close_col = 6
+volume_col = 7
+
+'Output header row
+print("{:<12}{:<20}{:<20}{:<20}".format("Ticker", "Yearly Change", "Percent Change", "Total Volume", "Color"))
+
+
+'Loop through each stock
+for row in range(2, last_row+1):
+    'Read data
+    ticker = ws.cell(Row = Row, Column = ticker_col).Value
+    Date = ws.cell(Row = Row, Column = date_col).Value
+    open_price = ws.cell(Row = Row, Column = open_col).Value
+    close_price = ws.cell(Row = Row, Column = close_col).Value
+    volume = ws.cell(Row = Row, Column = volume_col).Value
+    
+'Calculate yearly change and percent change
+    yearly_change = close_price - open_price
+    percent_change = yearly_change/open_price * 100 if open_price !=0 else 0
+    
+'Determine color for conditionaal formatting
+    color = "green" if yearly_change >=0 else "red"
+    
+'Output results
+    print("{:<12}{:<20.2f}{:<20.2f}%{:<20}{:<20}".format(ticker, yearly_change, percent_change, volume, color))
+    
+'Save workbook
+wb.save('alphabetical testing.xlsx')
+    
